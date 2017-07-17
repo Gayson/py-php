@@ -9,6 +9,7 @@ class Dispatcher(object):
         self.logs = {}
 
     def ping(self):
+        print 'ping request'
         return 'pong'
 
     def add(self, num1, num2):
@@ -49,5 +50,5 @@ class Dispatcher(object):
         else:
             return None
 
-server = make_server(data_service_thrift.Calculator, Dispatcher(), '0.0.0.0', 6000)
+server = make_server(data_service_thrift.Calculator, Dispatcher(), setting.LISTEN_IP, setting.SERVER_PORT)
 server.serve()

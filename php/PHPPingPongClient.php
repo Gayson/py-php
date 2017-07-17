@@ -4,8 +4,8 @@ namespace ppthrift\php;
 
 error_reporting(E_ALL);
 
-require_once "./vendor/apache/thrift/lib/php/lib/Thrift/ClassLoader/ThriftClassLoader.php";
-require_once "./gen-php/PingPong.php";
+require_once "./../vendor/apache/thrift/lib/php/lib/Thrift/ClassLoader/ThriftClassLoader.php";
+require_once "./../idls/gen-php/PingPong.php";
 use Thrift\ClassLoader\ThriftClassLoader;
 
 $GEN_DIR = realpath(dirname(__FILE__))."/gen-php";

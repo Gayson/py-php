@@ -62,14 +62,14 @@ include "shared.thrift"
  * Thrift files can namespace, package, or prefix their output in various
  * target languages.
  */
-namespace cpp tutorial
-namespace d tutorial
-namespace dart tutorial
-namespace java tutorial
-namespace php tutorial
-namespace perl tutorial
-namespace haxe tutorial
-namespace netcore tutorial
+namespace cpp DataService
+namespace d DataService
+namespace dart DataService
+namespace java DataService
+namespace php DataService
+namespace perl DataService
+namespace haxe DataService
+namespace netcore DataService
 
 /**
  * Thrift lets you do typedefs to get pretty names for your types. Standard
