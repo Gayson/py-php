@@ -1,0 +1,17 @@
+{
+	"require": {
+		"apache/thrift": "^0.10.0"
+	},
+	"repositories": [{
+			"type": "composer",
+			"url": "https://packagist.baixing.cn/repo/private/"
+		},
+		{
+			"type": "composer",
+			"url": "https://packagist.phpcomposer.com"
+		},
+		{
+			"packagist": false
+		}
+	]
+}
