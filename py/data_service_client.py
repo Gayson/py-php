@@ -2,9 +2,12 @@ import thriftpy
 from thriftpy.rpc import make_client
 import setting
 
-data_service_thrift = thriftpy.load(setting.PROJECT_DIR + '/idls/DataService.thrift', module_name='data_service_thrift')
+data_service_thrift = thriftpy.load(
+    setting.PROJECT_DIR + '/idls/DataService.thrift',
+    module_name='data_service_thrift')
 
-client = make_client(data_service_thrift.Calculator, setting.LOCAL_SERVER_IP, setting.SERVER_PORT)
+client = make_client(data_service_thrift.Calculator, setting.LOCAL_SERVER_IP,
+                     setting.SERVER_PORT)
 
 print client.ping()
 print client.add(4, 5)

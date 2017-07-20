@@ -2,7 +2,10 @@ import thriftpy
 from thriftpy.rpc import make_server
 import setting
 
-data_service_thrift = thriftpy.load(setting.PROJECT_DIR + '/idls/DataService.thrift', module_name='data_service_thrift')
+data_service_thrift = thriftpy.load(
+    setting.PROJECT_DIR + '/idls/DataService.thrift',
+    module_name='data_service_thrift')
+
 
 class Dispatcher(object):
     def __init__(self):
@@ -50,5 +53,7 @@ class Dispatcher(object):
         else:
             return None
 
-server = make_server(data_service_thrift.Calculator, Dispatcher(), setting.LISTEN_IP, setting.SERVER_PORT)
+
+server = make_server(data_service_thrift.Calculator,
+                     Dispatcher(), setting.LISTEN_IP, setting.SERVER_PORT)
 server.serve()
