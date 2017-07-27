@@ -1,9 +1,9 @@
 #ifndef _CPP_CONVERT_TPROTOCOL_H_
 #define _CPP_CONVERT_TPROTOCOL_H_
 
-#include "TTransport.h"
-#include "TException.h"
-#include "TType.h"
+#include "../transport/TTransport.h"
+#include "../TException.h"
+#include "../TType.h"
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
@@ -91,11 +91,13 @@ public:
 protected:
     TProtocol(CPPTransport::TTransport &trans)
         : trans_(trans) {
-        endian_ = TNetworkBigEndian();
+        endian_ = new TNetworkBigEndian();
     }
 
-    TProtocol(CPPTransport::TTransport &trans, NetWorkEndian endian)
+    TProtocol(CPPTransport::TTransport &trans, NetWorkEndian *endian)
         : trans_(trans), endian_(endian) {}
+
+    ~TProtocol();
 
     //TProtocol(boost::shared_ptr<CPPTransport::TTransport> ptrans_)
     //: trans_(t) {}
@@ -104,7 +106,7 @@ protected:
 
     CPPTransport::TTransport &trans_;
 
-    NetWorkEndian endian_;
+    NetWorkEndian *endian_;
 };
 };
 };

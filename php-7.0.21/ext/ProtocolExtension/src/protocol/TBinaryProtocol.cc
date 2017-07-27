@@ -1,6 +1,8 @@
 #include "TBinaryProtocol.h"
 #include <boost/static_assert.hpp>
-#include "TFunc.h"
+#include "../TFunc.h"
+#include "../TType.h"
+#include "../TException.h"
 
 namespace CPPConvert {
 namespace CPPProtocol {
@@ -78,19 +80,19 @@ ui32 TBinaryProtocol::writeByte(const i8 byte) throw(CPPException::CPPTException
 }
 
 ui32 TBinaryProtocol::writeI16(const i16 val) throw(CPPException::CPPTException) {
-    i16 net = (i16)this->endian_.toWire16(val);
+    i16 net = (i16)this->endian_->toWire16(val);
     this->trans_.write((ui8 *)&net, 2);
     return 2;
 }
 
 ui32 TBinaryProtocol::writeI32(const i32 val) throw(CPPException::CPPTException) {
-    i32 net = (i32)this->endian_.toWire32(val);
+    i32 net = (i32)this->endian_->toWire32(val);
     this->trans_.write((ui8 *)&net, 4);
     return 4;
 }
 
 ui32 TBinaryProtocol::writeI64(const i64 val) throw(CPPException::CPPTException) {
-    i64 net = (i64)this->endian_.toWire64(val);
+    i64 net = (i64)this->endian_->toWire64(val);
     this->trans_.write((ui8 *)&net, 8);
     return 8;
 }
@@ -101,8 +103,9 @@ ui32 TBinaryProtocol::writeDouble(const double dub) throw(CPPException::CPPTExce
     BOOST_STATIC_ASSERT(std::numeric_limits<double>::is_iec559);
 
     ui64 net = bitwise_cast<double, ui64>(dub);
-    net = this->endian_.toWire64(net);
+    net = this->endian_->toWire64(net);
     this->trans_.write((ui8 *)&net, 8);
+    return 8;
 }
 
 ui32 TBinaryProtocol::writeString(const char *str, const i32 len) throw(CPPException::CPPTException) {
@@ -122,7 +125,7 @@ ui32 TBinaryProtocol::writeString(const char *str, const i32 len) throw(CPPExcep
  * message read module
  */
 
-ui32 TBinaryProtocol::readMessageBegin(char **name, TMessageType &messageType, i32 &seqid) throw(CPPException::CPPTException) {
+ui32 TBinaryProtocol::readMessageBegin(char **name, TMessageType &messageType, i32 &seqid) {
     ui32 result = 0;
     i32 sz;
     result += readI32(sz);
@@ -149,7 +152,7 @@ ui32 TBinaryProtocol::readMessageBegin(char **name, TMessageType &messageType, i
     return result;
 }
 
-ui32 TBinaryProtocol::readMessageEnd() throw(CPPException::CPPTException) {
+ui32 TBinaryProtocol::readMessageEnd() {
     return 0;
 }
 
@@ -157,7 +160,7 @@ ui32 TBinaryProtocol::readStructBegin(char **name) throw(CPPException::CPPTExcep
     /**
      * null_str is define in TType.h
      */
-    *name = &none_str[0];
+    *name = 0;
     return 0;
 }
 
@@ -252,7 +255,7 @@ ui32 TBinaryProtocol::readI16(i16 &val) throw(CPPException::CPPTException) {
     /* 奇技淫巧 */
     b2i16 b_trans;
     this->trans_.readAll(b_trans.b, 2);
-    val = (i16)this->endian_.fromWire16(b_trans.val);
+    val = (i16)this->endian_->fromWire16(b_trans.val);
 
     return 2;
 }
@@ -260,14 +263,14 @@ ui32 TBinaryProtocol::readI16(i16 &val) throw(CPPException::CPPTException) {
 ui32 TBinaryProtocol::readI32(i32 &val) throw(CPPException::CPPTException) {
     b2i32 b_trans;
     this->trans_.readAll(b_trans.b, 4);
-    val = (i32)this->endian_.fromWire32(b_trans.val);
+    val = (i32)this->endian_->fromWire32(b_trans.val);
     return 4;
 }
 
 ui32 TBinaryProtocol::readI64(i64 &val) throw(CPPException::CPPTException) {
     b2i64 b_trans;
     this->trans_.readAll(b_trans.b, 8);
-    val = (i64)this->endian_.fromWire64(b_trans.val);
+    val = (i64)this->endian_->fromWire64(b_trans.val);
     return 8;
 }
 
@@ -277,7 +280,7 @@ ui32 TBinaryProtocol::readDouble(double &dub) throw(CPPException::CPPTException)
 
     b2dub b_trans;
     this->trans_.readAll(b_trans.b, 8);
-    b_trans.val = this->endian_.fromWire64(b_trans.val);
+    b_trans.val = this->endian_->fromWire64(b_trans.val);
     dub = bitwise_cast<ui64, double>(b_trans.val);
     return 8;
 }
@@ -297,7 +300,7 @@ ui32 TBinaryProtocol::readStringBody(char **str, i32 size) throw(CPPException::C
     }
 
     if (size == 0) {
-        *str = &none_str[0];
+        *str = 0;
     }
 
     /* 原CPP实现 */

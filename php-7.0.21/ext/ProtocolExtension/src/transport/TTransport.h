@@ -1,13 +1,15 @@
 #ifndef _CPP_CONVERT_TTRANSPORT_H_
 #define _CPP_CONVERT_TTRANSPORT_H_
 
-#include "TException.h"
-#include "TType.h"
+#include "../TException.h"
+#include "../TType.h"
 #include <string>
 namespace CPPConvert {
 namespace CPPTransport {
 class TTransport {
 public:
+    virtual ~TTransport() {}
+
     virtual bool isOpen() {
         return false;
     }
@@ -17,11 +19,11 @@ public:
         return isOpen();
     }
 
-    virtual std::string read(ui8* buf, ui32 len) = 0;
-    virtual std::string readAll(ui8* buf, ui32 len);
+    virtual void read(ui8* buf, ui32 len) = 0;
+    virtual void readAll(ui8* buf, ui32 len) = 0;
 
-    virtual void write(const uint8_t* buf, uint32_t len) throw();
-    virtual void flush() throw();
+    virtual void write(const ui8* buf, ui32 len) throw() = 0;
+    virtual void flush() throw() = 0;
 
     /**
      * 原Thrift CPP TProtocol函数，PHP TProtocol不存在，因此留一个接口。
@@ -36,8 +38,10 @@ public:
     }
 
 protected:
+    TTransport() {}
 private:
 };
+
 };
 };
 

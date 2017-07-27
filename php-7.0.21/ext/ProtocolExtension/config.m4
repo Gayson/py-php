@@ -12,10 +12,20 @@ dnl Make sure that the comment is aligned:
 dnl [  --with-ProtocolExtension             Include ProtocolExtension support])
 
 dnl Otherwise use enable:
-
+AC_MSG_CHECKING([for ProtocolExtension-config])
+  PROTOCOLEXTENSION_CONFIG="ProtocolExtension-config"
+  if test "$PHP_PROTOCOLEXTENSION" != "yes"; then
+    PROTOCOLEXTENSION_PATH=$PHP_PROTOCOLEXTENSION
+  else
+    PROTOCOLEXTENSION_PATH=`$php_shtool path $PROTOCOLEXTENSION_CONFIG`
+  fi
 PHP_ARG_ENABLE(ProtocolExtension, whether to enable ProtocolExtension support,
 Make sure that the comment is aligned:
 [  --enable-ProtocolExtension           Enable ProtocolExtension support])
+
+PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/src])
+PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/protocol])
+PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/transport])
 
 if test "$PHP_PROTOCOLEXTENSION" != "no"; then
   PHP_NEW_EXTENSION(ProtocolExtension, ProtocolExtension.c, $ext_shared,, -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1)

@@ -126,66 +126,72 @@ typedef unsigned long long ui64;
 /**
  * global none str
  */
-char none_str[] = "";
+
+#ifndef _UNIQUE_STR_
+#define _UNIQUE_STR_
 
 class NetWorkEndian {
 public:
-    static ui16 toWire16(ui16 x);
+    virtual ui16 toWire16(ui16 x) = 0;
 
-    static ui32 toWire32(ui32 x);
+    virtual ui32 toWire32(ui32 x) = 0;
 
-    static ui64 toWire64(ui64 x);
+    virtual ui64 toWire64(ui64 x) = 0;
 
-    static ui16 fromWire16(ui16 x);
+    virtual ui16 fromWire16(ui16 x) = 0;
 
-    static ui32 fromWire32(ui32 x);
+    virtual ui32 fromWire32(ui32 x) = 0;
 
-    static ui64 fromWire64(ui64 x);
+    virtual ui64 fromWire64(ui64 x) = 0;
 };
 
 
 class TNetworkBigEndian : public NetWorkEndian {
-    static ui16 toWire16(ui16 x)   {
+public:
+    ui16 toWire16(ui16 x) override   {
         return htons(x);
     }
-    static ui32 toWire32(ui32 x)   {
+    ui32 toWire32(ui32 x) override   {
         return htonl(x);
     }
-    static ui64 toWire64(ui64 x)   {
+    ui64 toWire64(ui64 x) override   {
         return THRIFT_htonll(x);
     }
-    static ui16 fromWire16(ui16 x) {
+    ui16 fromWire16(ui16 x) override {
         return ntohs(x);
     }
-    static ui32 fromWire32(ui32 x) {
+    ui32 fromWire32(ui32 x) override {
         return ntohl(x);
     }
-    static ui64 fromWire64(ui64 x) {
+    ui64 fromWire64(ui64 x) override {
         return THRIFT_ntohll(x);
     }
 };
 
 // On most systems, this will be a bit faster than TNetworkBigEndian
 class TNetworkLittleEndian : public NetWorkEndian {
-    static ui16 toWire16(ui16 x)   {
+public:
+    ui16 toWire16(ui16 x) override   {
         return THRIFT_htoles(x);
     }
-    static ui32 toWire32(ui32 x)   {
+    ui32 toWire32(ui32 x) override   {
         return THRIFT_htolel(x);
     }
-    static ui64 toWire64(ui64 x)   {
+    ui64 toWire64(ui64 x) override   {
         return THRIFT_htolell(x);
     }
-    static ui16 fromWire16(ui16 x) {
+    ui16 fromWire16(ui16 x) override {
         return THRIFT_letohs(x);
     }
-    static ui32 fromWire32(ui32 x) {
+    ui32 fromWire32(ui32 x) override {
         return THRIFT_letohl(x);
     }
-    static ui64 fromWire64(ui64 x) {
+    ui64 fromWire64(ui64 x) override {
         return THRIFT_letohll(x);
     }
 };
+
+#endif
 
 
 /* byte to other */
@@ -210,3 +216,13 @@ union b2dub {
     ui8 b[8];
     ui64 val;
 };
+
+#ifdef __GNUC__
+#define LIKELY(val) (__builtin_expect((val), 1))
+#define UNLIKELY(val) (__builtin_expect((val), 0))
+#else
+#define LIKELY(val) (val)
+#define UNLIKELY(val) (val)
+#endif
+
+#endif
