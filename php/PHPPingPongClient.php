@@ -26,7 +26,7 @@ use Thrift\Exception\TException;
 try{
 	if (array_search("--http", $argv)) {
 		print "start htep client\n";
-		$socket = new THttpClient("tc64", 6000, "/php/PhpServer.php");
+		$socket = new THttpClient("115.159.222.144", 6000, "/php/PhpServer.php");
 	} else {
 		print "start socket\n";
 		$socket = new TSocket("115.159.222.144", 6000);

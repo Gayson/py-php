@@ -24,9 +24,12 @@ Make sure that the comment is aligned:
 [  --enable-ProtocolExtension           Enable ProtocolExtension support])
 
 PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/src])
-PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/protocol])
-PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/transport])
+PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/src/protocol])
+PHP_ADD_INCLUDE([$PHP_PROTOCOLEXTENSION/src/transport])
 
+PHP_ADD_BUILD_DIR([$ext_builddir/src/])
+PHP_ADD_BUILD_DIR([$ext_builddir/transport/])
+PHP_ADD_BUILD_DIR([$ext_builddir/protocol/])
 if test "$PHP_PROTOCOLEXTENSION" != "no"; then
   PHP_NEW_EXTENSION(ProtocolExtension, ProtocolExtension.c, $ext_shared,, -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1)
 fi

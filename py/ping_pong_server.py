@@ -1,8 +1,10 @@
 import thriftpy
 
-pingpong_thrift = thriftpy.load('./PingPong.thrift', module_name='pingpong_thrift')
+pingpong_thrift = thriftpy.load(
+    './PingPong.thrift', module_name='pingpong_thrift')
 
 from thriftpy.rpc import make_server
+
 
 class Dispatcher(object):
     def ping(self):
