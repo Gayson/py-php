@@ -1,6 +1,7 @@
 import thriftpy
 from thriftpy.rpc import make_server
 import setting
+import time
 
 data_service_thrift = thriftpy.load(
     setting.PROJECT_DIR + '/idls/DataService.thrift',

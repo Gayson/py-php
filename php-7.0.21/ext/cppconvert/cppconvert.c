@@ -57,7 +57,8 @@ PHP_FUNCTION(confirm_cppconvert_compiled)
 	size_t arg_len, len;
 	zend_string *strg;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &arg, &arg_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &arg, &arg_len) == FAILURE)
+	{
 		return;
 	}
 
@@ -78,8 +79,8 @@ PHP_FUNCTION(confirm_cppconvert_compiled)
 /* Uncomment this function if you have INI entries
 static void php_cppconvert_init_globals(zend_cppconvert_globals *cppconvert_globals)
 {
-	cppconvert_globals->global_value = 0;
-	cppconvert_globals->global_string = NULL;
+    cppconvert_globals->global_value = 0;
+    cppconvert_globals->global_string = NULL;
 }
 */
 /* }}} */
@@ -145,22 +146,24 @@ PHP_MINFO_FUNCTION(cppconvert)
  *
  * Every user visible function must have an entry in cppconvert_functions[].
  */
-const zend_function_entry cppconvert_functions[] = {
-	PHP_FE(confirm_cppconvert_compiled,	NULL)		/* For testing, remove later. */
-	PHP_FE_END	/* Must be the last line in cppconvert_functions[] */
+const zend_function_entry cppconvert_functions[] =
+{
+	PHP_FE(confirm_cppconvert_compiled, NULL)       /* For testing, remove later. */
+	PHP_FE_END  /* Must be the last line in cppconvert_functions[] */
 };
 /* }}} */
 
 /* {{{ cppconvert_module_entry
  */
-zend_module_entry cppconvert_module_entry = {
+zend_module_entry cppconvert_module_entry =
+{
 	STANDARD_MODULE_HEADER,
 	"cppconvert",
 	cppconvert_functions,
 	PHP_MINIT(cppconvert),
 	PHP_MSHUTDOWN(cppconvert),
-	PHP_RINIT(cppconvert),		/* Replace with NULL if there's nothing to do at request start */
-	PHP_RSHUTDOWN(cppconvert),	/* Replace with NULL if there's nothing to do at request end */
+	PHP_RINIT(cppconvert),      /* Replace with NULL if there's nothing to do at request start */
+	PHP_RSHUTDOWN(cppconvert),  /* Replace with NULL if there's nothing to do at request end */
 	PHP_MINFO(cppconvert),
 	PHP_CPPCONVERT_VERSION,
 	STANDARD_MODULE_PROPERTIES
